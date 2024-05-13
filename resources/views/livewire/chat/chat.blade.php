@@ -15,7 +15,9 @@
             </div> --}}
 
             <livewire:chat.chat-box>
-    
+
+            {{-- @livewire('users') --}}
+
         </div>
     </div>
-    </x-app-layout>
+</x-app-layout>

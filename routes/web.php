@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Users;
 use App\Livewire\Chat\Chat;
 use App\Livewire\Chat\Index;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,16 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/chat',[Index::class,'render'])->name('chat.index');
-Route::get('/chat/{query}',[Chat::class,'render'])->name('chat');
+Route::middleware('auth')->group(function () {
+    Route::get('/chat',[Index::class,'render'])->name('chat.index');
+    Route::get('/chat/{query}',[Chat::class,'render'])->name('chat');
+    
+    Route::get('/users',[Users::class,'render'])->name('users');
+    Route::get('/chat/{query}',[Users::class,'message'])->name('chat-form');
+});
+
+
+
+
+
 
