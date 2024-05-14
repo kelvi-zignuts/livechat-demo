@@ -24,11 +24,10 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
-    Route::get('/chat',[Index::class,'render'])->name('chat.index');
-    Route::get('/chat/{query}',[Chat::class,'render'])->name('chat');
+    Route::get('/chat',Index::class)->name('chat.index');
+    Route::get('/chat/{query}',Chat::class)->name('chat');
     
-    Route::get('/users',[Users::class,'render'])->name('users');
-    Route::get('/chat/{query}',[Users::class,'message'])->name('chat-form');
+    Route::get('/users',Users::class)->name('users');
 });
 
 

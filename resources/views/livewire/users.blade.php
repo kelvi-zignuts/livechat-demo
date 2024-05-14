@@ -30,13 +30,15 @@
                             Add Friend
                         </x-secondary-button>
     
-                        {{-- <x-primary-button wire:click="message({{$user->id}})" >
+                        <x-primary-button wire:click="message({{$user->id}})" >
                             Message
-                        </x-primary-button> --}}
+                        </x-primary-button>
 
-                        <a href="{{route('chat',[$user->id])}}">
+                        {{-- <a href="{{route('chat',[$user->id])}}">
                             Message
-                        </a>
+                        </a> --}}
+                        
+                        
     
                     </div>
     

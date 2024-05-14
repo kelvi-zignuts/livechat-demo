@@ -8,7 +8,7 @@ use App\Models\Conversation;
 class Chat extends Component
 {
     public $query;
-    public $selectConversation;
+    public $selectedConversation;
    
    
     public function render()
@@ -16,7 +16,7 @@ class Chat extends Component
         return view('livewire.chat.chat');
     }
     public function mount(){
-        $this->selectConversation=Conversation::findOrFail($this->query);
-        dd($this->selectConversation);
+        $this->selectedConversation=Conversation::findOrFail($this->query);
+        // dd($this->selectedConversation);
      }
 }

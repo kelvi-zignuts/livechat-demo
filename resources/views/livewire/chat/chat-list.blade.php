@@ -1,4 +1,20 @@
-<div x-data="{type:'all'}" class="flex flex-col transition-all h-full overflow-hidden">
+<div x-data="{type:'all',query:@entangle('query')}" 
+
+    x-init="
+    setTimeout (()=>{
+        conversationElement = document.getElementById('conversation-'+query);
+
+        //scroll to the element
+
+        if(conversationElement)
+        {
+            conversationElement.scrollIntoView({'behavior':'smooth'});
+        }
+    }
+    ),200;
+    "
+
+    class="flex flex-col transition-all h-full overflow-hidden">
 
     <header class="px-3 z-10 bg-white sticky top-0 w-full py-2">
 
@@ -43,22 +59,27 @@
         {{-- chatlist --}}
 
         <ul class="p-2 grid w-full spacey-y-2">
+            @if($conversations)
+            
+            @foreach($conversations as $key=> $conversation)
+           
             <li
-                class="py-3 hover:bg-gray-25 rounded-2xl dark:hover:bg-gray-700/70 transition-colors duration-150 flex gap-4 relative w-full cursor-pointer px-2">
+                id="conversation-{{$conversation->id}}" wire:key="{{$conversation->id}}"
+                class="py-3 hover:bg-gray-25 rounded-2xl dark:hover:bg-gray-200/70 transition-colors duration-150 flex gap-4 relative w-full cursor-pointer px-2 {{$conversation->id==$selectedConversation?->id ? 'bg-gray-200/70':''}}">
                 <a href="#" class="shrink-0">
-                    <x-avatar />
+                    <img src="https://source.unsplash.com/50x50?face-{{$key}}" alt="image" class="rounded-full shadow-lg">
                 </a>
 
                 <aside class="grid grid-cols-12 w-full">
-                    <a href="#"
+                    <a href="{{route('chat',$conversation->id)}}"
                         class="col-span-11 border-b pb-2 border-gray-200 relative overflow-hidden truncate leading-5 w-full flex-nowrap p-1">
                         <div class="flex justify-between w-full items-center">
 
                             <h6 class="truncate font-medium tracking-wider text-gray-900">
-                                John Doe
+                                {{$conversation->getReceiver()->name}}
                             </h6>
 
-                            <small class="text-gray-700">5d</small>
+                            <small class="text-gray-700">{{$conversation->messages?->last()?->created_at?->shortAbsoluteDiffForHumans()}}</small>
 
                         </div>
 
@@ -161,6 +182,11 @@
                     </div>
                 </aside>
             </li>
+            @endforeach
+
+            @else
+                
+            @endif
         </ul>
 
     </main>

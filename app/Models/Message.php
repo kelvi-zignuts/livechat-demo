@@ -31,4 +31,10 @@ class Message extends Model
         return $this->belongsTo(Conversation::class);
     }
 
+    public function isRead():bool
+    {
+
+         return $this->read_at != null;
+    }
+
 }
