@@ -11,7 +11,6 @@ class ChatBox extends Component
     public $body = '';
     public $loadedMessages;
 
-
     public function loadMessages()
     {
         $this->loadedMessages=Message::where('conversation_id',$this->selectedConversation->id)->get();
@@ -38,7 +37,15 @@ class ChatBox extends Component
 
         // dd($this->body);
 
+        $this->dispatch('scroll-bottom');
+
         $this->loadedMessages->push($createdMessage);
+
+        $this->selectedConversation->updated_at=now();
+        $this->selectedConversation->save();
+
+        $this->dispatch('refresh')->to('chat.chat-list');
+
     }
 
     public function mount()

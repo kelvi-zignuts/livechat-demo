@@ -28,4 +28,18 @@ class Conversation extends Model
 
         }
     }
+    public function unreadMessageCount()
+    {
+        return $unreadMessage = Message::where('conversation_id','=',$this->id)->where('receiver_id',auth()->user()->id)->whereNull('read_at')->count();
+    }
+    public function isLastMessageReadByUser()
+    {
+        $user=Auth()->User();
+        $lastMessage = $this->messages()->latest()->first();
+
+        if($lastMessage)
+        {
+            return $lastMessage->read_at !==null && $lastMessage->sender_id == $user->id;
+        }
+    }
 }
