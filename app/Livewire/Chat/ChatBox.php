@@ -4,6 +4,8 @@ namespace App\Livewire\Chat;
 
 use App\Models\Message;
 use Livewire\Component;
+use App\Events\MessageSent;
+use Livewire\Attributes\On;
 
 class ChatBox extends Component
 {
@@ -31,6 +33,8 @@ class ChatBox extends Component
 
         ]);
 
+        broadcast(new MessageSent($createdMessage))->toOthers();
+
         $this->reset('body');
 
         // dd($createdMessage); //give array of all data
@@ -48,6 +52,10 @@ class ChatBox extends Component
 
     }
 
+    // #[On('echo-private:channel-name.{$message->sender_id},MessageSent')]
+    // public function listenForMessage($event){
+    //     dd($event);
+    // }
     public function mount()
     {
         $this->loadMessages();

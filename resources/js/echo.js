@@ -15,3 +15,7 @@ window.Echo = new Echo({
 window.Echo.channel("delivery").listen("PackageSent", (event) => {
     console.log(event);
 });
+// window.Echo.private('channel-name' + conversationId)
+//    .listen('MessageSent', (event) => {
+//         console.log(event);
+//     });
