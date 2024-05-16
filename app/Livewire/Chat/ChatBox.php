@@ -12,10 +12,12 @@ class ChatBox extends Component
     public $selectedConversation;
     public $body = '';
     public $loadedMessages;
+    public $sender_id;
 
     public function loadMessages()
     {
         $this->loadedMessages=Message::where('conversation_id',$this->selectedConversation->id)->get();
+
     }
 
     public function sendMessage()
@@ -33,6 +35,7 @@ class ChatBox extends Component
 
         ]);
 
+        
         broadcast(new MessageSent($createdMessage))->toOthers();
 
         $this->reset('body');
@@ -52,12 +55,35 @@ class ChatBox extends Component
 
     }
 
-    // #[On('echo-private:channel-name.{$message->sender_id},MessageSent')]
-    // public function listenForMessage($event){
+    #[On('echo-private:chat-channel.{sender_id},MessageSent')]
+    public function listenForMessage($event){
+        // dd($event);
+
+        
+            if (isset($event['createdMessage']) && $event['createdMessage']['conversation_id'] == $this->selectedConversation->id) {
+                $this->dispatch('scroll-bottom');
+        
+                $newMessage = Message::find($event['createdMessage']['id']);
+        
+                $this->loadedMessages->push($newMessage);
+            }
+
+        // $this->loadedMessages->push($createdMessage);
+        // $createdMessage = Message::whereId($event['message']['id'])->first();
+        // $this->chatMessage($chatMessage);
+    
+    }
+
+    // #[On('echo:chat-channel,MessageSent')]
+    // public function onPackageSent($event)
+    // {
     //     dd($event);
+    //     // $this->packageStatuses[] = $event;
     // }
     public function mount()
     {
+        $this->sender_id = auth()->id();
+        // dd($this->sender_id);
         $this->loadMessages();
     }
 

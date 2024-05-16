@@ -45,10 +45,10 @@
                 class="inline-flex justify-center items-center rounded-full gap-x-1 text-xs font-medium px-3 lg:px-5 py-1  lg:py-2.5 border ">
                 All
             </button>
-            <button @click="type='deleted'" :class="{'bg-blue-100 border-0 text-black':type=='deleted'}"
+            {{-- <button @click="type='deleted'" :class="{'bg-blue-100 border-0 text-black':type=='deleted'}"
                 class="inline-flex justify-center items-center rounded-full gap-x-1 text-xs font-medium px-3 lg:px-5 py-1  lg:py-2.5 border ">
                 Deleted
-            </button>
+            </button> --}}
 
         </div>
 
@@ -58,7 +58,7 @@
 
         {{-- chatlist --}}
 
-        <ul wire:poll="1000ms" class="p-2 grid w-full spacey-y-2">
+        <ul class="p-2 grid w-full spacey-y-2 ">
             @if($conversations)
             
             @foreach($conversations as $key=> $conversation)
@@ -155,7 +155,7 @@
 
                                 <div class="w-full p-1">
 
-                                    <button
+                                    {{-- <button
                                         class="items-center gap-3 flex w-full px-4 py-2 text-left text-sm leading-5 text-gray-500 hover:bg-gray-100 transition-all duration-150 ease-in-out focus:outline-none focus:bg-gray-100">
 
                                         <span>
@@ -169,8 +169,10 @@
 
                                         View Profile
 
-                                    </button>
+                                    </button> --}}
                                     <button 
+                                    onclick="confirm('Are you sure?')||event.stopImmediatePropagation()"
+                                    wire:click="deleteByUser('{{encrypt($conversation->id)}}')"
                                         class="items-center gap-3 flex w-full px-4 py-2 text-left text-sm leading-5 text-gray-500 hover:bg-gray-100 transition-all duration-150 ease-in-out focus:outline-none focus:bg-gray-100">
 
                                         <span>

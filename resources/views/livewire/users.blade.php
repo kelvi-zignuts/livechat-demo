@@ -26,9 +26,9 @@
     
                     <div class="flex mt-4 space-x-3 md:mt-6">
     
-                        <x-secondary-button>
+                        {{-- <x-secondary-button>
                             Add Friend
-                        </x-secondary-button>
+                        </x-secondary-button> --}}
     
                         <x-primary-button wire:click="message({{$user->id}})" >
                             Message

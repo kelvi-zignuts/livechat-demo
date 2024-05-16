@@ -11,25 +11,25 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class MessageSent implements ShouldBroadcast
+class MessageSent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    // public $createdMessage;
+    public $createdMessage;
     // public $selectedConversation;
     
     public function __construct(
-        // $createdMessage
-        public int $user_id,
-        public string $message,
-        public int $conversation_id,
-        public int $receiverId,
+        $createdMessage
+        // public int $user_id,
+        // public string $message,
+        // public int $conversation_id,
+        // public int $receiver_id,
         )
     {
-        // $this->createdMessage = $createdMessage;
+        $this->createdMessage = $createdMessage;
     }
 
     /**
@@ -37,8 +37,11 @@ class MessageSent implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn(): array
     {
-        return new Channel('delivery');
+        // dd($this->createdMessage);
+        return [
+            new PrivateChannel('chat-channel.'.$this->createdMessage->receiver_id),
+        ];
     }
 }
